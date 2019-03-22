@@ -2,7 +2,7 @@ package org.softwire.training.bookish.controllers;
 
 import org.softwire.training.bookish.models.database.Technology;
 import org.softwire.training.bookish.models.page.AboutPageModel;
-import org.softwire.training.bookish.services.DatabaseService;
+import org.softwire.training.bookish.services.TechnologyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -17,17 +17,17 @@ import java.util.List;
 @RequestMapping("/about")
 public class AboutUsController {
 
-    private final DatabaseService databaseService;
+    private final TechnologyService technologyService;
 
     @Autowired
-    public AboutUsController(DatabaseService databaseService) {
-        this.databaseService = databaseService;
+    public AboutUsController(TechnologyService technologyService) {
+        this.technologyService = technologyService;
     }
 
     @RequestMapping("")
     ModelAndView aboutUs() {
 
-        List<Technology> allTechnologies = databaseService.getAllTechnologies();
+        List<Technology> allTechnologies = technologyService.getAllTechnologies();
 
         AboutPageModel aboutPageModel = new AboutPageModel();
         aboutPageModel.setTechnologies(allTechnologies);
@@ -38,7 +38,7 @@ public class AboutUsController {
     @RequestMapping("/add-technology")
     RedirectView addTechnology(@ModelAttribute Technology technology) {
 
-        databaseService.addTechnology(technology);
+        technologyService.addTechnology(technology);
 
         return new RedirectView("/about");
     }
@@ -46,9 +46,8 @@ public class AboutUsController {
     @RequestMapping("/delete-technology")
     RedirectView deleteTechnology(@RequestParam int technologyId) {
 
-        databaseService.deleteTechnology(technologyId);
+        technologyService.deleteTechnology(technologyId);
 
         return new RedirectView("/about");
     }
-
 }
